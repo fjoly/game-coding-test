@@ -1,12 +1,14 @@
 import {IQuery} from "@nestjs/cqrs";
-import {RepositoryFindOptions} from "../../core/common/persistence/RepositoryOptions";
+import {RepositoryFindOptions} from "../../core/common/persistence/repositoryOptions";
 
 export class GetGamesQuery implements IQuery {
   constructor(
       readonly tags: string[] | undefined,
-      readonly releaseDate: Date | undefined,
+      readonly releaseDate: string | undefined,
       readonly publisherName: string | undefined,
       readonly publisherSiret: number | undefined,
+      readonly releaseDateOlderThan: string | undefined,
+      readonly releaseDateYoungerThan: string | undefined,
       readonly options: RepositoryFindOptions | undefined
   ) {}
 }

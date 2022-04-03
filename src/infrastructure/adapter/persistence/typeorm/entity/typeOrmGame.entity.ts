@@ -1,4 +1,4 @@
-import {Column, Entity, JoinColumn, OneToOne, PrimaryColumn} from 'typeorm';
+import {Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn} from 'typeorm';
 import {TypeOrmPublisherEntity} from "./typeOrmPublisher.entity";
 
 @Entity('game')
@@ -10,10 +10,10 @@ export class TypeOrmGameEntity {
   @Column()
   public title: string;
 
-  @Column()
+  @Column("decimal", { precision: 8, scale: 2 })
   public price: number;
 
-  @OneToOne(() => TypeOrmPublisherEntity, {eager:true, cascade:true })
+  @ManyToOne(() => TypeOrmPublisherEntity, {eager:true, cascade:true })
   @JoinColumn()
   public publisher: TypeOrmPublisherEntity;
 

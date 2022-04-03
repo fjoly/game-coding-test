@@ -7,12 +7,12 @@ export interface GameRepositoryPort {
 
   findGame(by: { id?:string, title?: string }): Promise<Optional<Game>>;
 
-  findGames(by: { tags?:string[], releaseDate?: Date, publisherName?:string, publisherSiret?:number }, options?: RepositoryFindOptions): Promise<Game[]>;
+  findGames(by: { tags?:string[], releaseDate?: Date, publisherName?:string, publisherSiret?:number, releaseDateOlderThan?:Date, releaseDateYoungerThan?: Date }, options?: RepositoryFindOptions): Promise<Game[]>;
 
   addGame(game: Game): Promise<Game>;
 
-  updateGame(game: Game): Promise<void>;
+  updateGames(game: Game | Game[]): Promise<void>;
 
-  removeGame(game: Game): Promise<void>;
+  removeGames(game: Game | Game[]): Promise<void>;
 
 }

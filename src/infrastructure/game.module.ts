@@ -12,6 +12,9 @@ import {RemoveGameHandler} from "../application/commands/removeGame.handler";
 import {GetGamesHandler} from "../application/queries/getGames.handler";
 import {GetGameHandler} from "../application/queries/getGame.handler";
 import {GameProvider} from "../core/domain/provider/game.provider";
+import {
+  TypeOrmPublisherRepositoryAdapter
+} from "./adapter/persistence/typeorm/repository/typeOrmPublisher.repository.adapter";
 
 export const CommandHandlers = [CreateGameHandler, EditGameHandler,RemoveAndApplyDiscountGameHandler,RemoveGameHandler];
 export const QueryHandlers = [GetGamesHandler, GetGameHandler];
@@ -20,6 +23,10 @@ const AdapterProviders: Provider[] = [
   {
     provide : GameProvider.GameRepository,
     useClass: TypeOrmGameRepositoryAdapter,
+  },
+  {
+    provide : GameProvider.PublisherRepository,
+    useClass: TypeOrmPublisherRepositoryAdapter,
   },
 ];
 

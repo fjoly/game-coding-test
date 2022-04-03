@@ -25,7 +25,7 @@ export class TypeOrmGameRepositoryAdapter implements GameRepositoryPort {
     return TypeOrmGameMapper.toDomainEntity(gameEntity);
   }
 
-  async findGames(by: { tags?:string[], releaseDate?: Date, publisherName?:string, publisherSiret?:number }, options?: RepositoryFindOptions): Promise<Game[]> {
+  async findGames(by: { tags?:string[], releaseDate?: Date, publisherName?:string, publisherSiret?:number, releaseDateOlderThan?:Date, releaseDateYoungerThan?: Date }, options?: RepositoryFindOptions): Promise<Game[]> {
     //Construct By Object.
     const byGame = {
       ...( by.releaseDate !==undefined && {releaseDate: by.releaseDate}),
@@ -37,29 +37,43 @@ export class TypeOrmGameRepositoryAdapter implements GameRepositoryPort {
           }
       )
     }
-    let gamesEntity = null;
+    const query = this.gameRepository.createQueryBuilder("game")
+        .leftJoinAndSelect("game.publisher", "publisher")
+        .where(byGame)
+        .skip(options?.offset)
+        .take(options?.limit)
     if (by.tags !== undefined && by.tags.length > 0) {
-      //Specific case of research by tags
-      gamesEntity = await this.gameRepository.createQueryBuilder("game")
-          .where(byGame)
-          .andWhere("game.tags && ARRAY[:...tags]", {tags: by.tags})
-          .skip(options?.offset)
-          .take(options?.limit)
-          .getMany();
-    } else {
-      gamesEntity = await this.gameRepository.find({where:byGame,skip:options?.offset,take:options?.limit});
+      query.andWhere("game.tags && :tags", {tags: by.tags});
     }
 
-    return TypeOrmGameMapper.toDomainEntities(gamesEntity);
+    if (by.releaseDateOlderThan) {
+      query.andWhere("game.releaseDate <= :releaseDateOlderThan", {releaseDateOlderThan: by.releaseDateOlderThan});
+    }
+
+    if (by.releaseDateYoungerThan) {
+      query.andWhere("game.releaseDate >= :releaseDateYoungerThan", {releaseDateYoungerThan: by.releaseDateYoungerThan});
+    }
+    return TypeOrmGameMapper.toDomainEntities(await query.getMany());
   }
 
-  async removeGame(game: Game): Promise<void> {
-    const gameEntity = TypeOrmGameMapper.toOrmEntity(game);
+  async removeGames(game: Game | Game[]): Promise<void> {
+    let gameEntity;
+    if(Array.isArray(game)){
+      gameEntity = TypeOrmGameMapper.toOrmEntities(game);
+    } else {
+      gameEntity = TypeOrmGameMapper.toOrmEntity(game);
+    }
+
     await this.gameRepository.remove(gameEntity);
   }
 
-  async updateGame(game: Game): Promise<void> {
-    const gameEntity = TypeOrmGameMapper.toOrmEntity(game);
+  async updateGames(game: Game | Game[]): Promise<void> {
+    let gameEntity;
+    if(Array.isArray(game)){
+      gameEntity = TypeOrmGameMapper.toOrmEntities(game);
+    } else {
+      gameEntity = TypeOrmGameMapper.toOrmEntity(game);
+    }
     await this.gameRepository.save(gameEntity);
   }
 

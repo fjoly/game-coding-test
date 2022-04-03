@@ -1,4 +1,3 @@
-import {Publisher} from "../../core/domain/entities/publisher";
 import {ICommand} from "@nestjs/cqrs";
 import {CreatePublisherEntityType} from "../../core/domain/entities/type/createPublisher.entity.type";
 

@@ -24,6 +24,7 @@ export class TypeOrmGameMapper {
     if(ormGame === null ) {
       return undefined
     }
+
     return new Game({
       id: ormGame.id,
       title: ormGame.title,
@@ -38,6 +39,7 @@ export class TypeOrmGameMapper {
     if(ormGame === null ) {
       return undefined
     }
+
     return {
       id: ormGame.id,
       title: ormGame.title,

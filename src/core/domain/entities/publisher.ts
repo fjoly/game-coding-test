@@ -25,6 +25,9 @@ export class Publisher extends Entity<string> {
   }
 
   public async edit(payload: EditPublisherEntityType): Promise<void> {
+    if (payload.id) {
+      this.id = payload.id;
+    }
     if (payload.name) {
       this.name = payload.name;
     }
@@ -54,6 +57,10 @@ export class Publisher extends Entity<string> {
     await publisher.validate();
     
     return publisher;
+  }
+
+  public toString(): string {
+    return "id: " + this.id.toString() + " name: " + this.name + " siret: " + this.siret.toString() + " phone : "+ this.phone;
   }
   
 }

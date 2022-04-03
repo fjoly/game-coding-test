@@ -66,7 +66,7 @@ export class Game extends Entity<string> {
       this.price = payload.price;
     }
     if (payload.publisher) {
-      await this.publisher.edit({name: payload.publisher.name, siret: payload.publisher.siret, phone: payload.publisher.phone});
+      await this.publisher.edit(payload.publisher);
     }
     if (payload.tags) {
       this.tags = payload.tags;
@@ -79,9 +79,9 @@ export class Game extends Entity<string> {
 
   public async applyDiscount(payload: DiscountGameEntityType): Promise<void> {
     if( payload.percentage > 0 && payload.percentage < 100 ){
-      this.price = this.price * payload.percentage * 0.01;
+      this.price = this.price - (this.price * payload.percentage * 0.01);
     } else {
-      throw Exception.new({code: Code.ENTITY_PAYLOAD_VALIDATION_ERROR, overrideMessage: `${this.constructor.name}: Percentage is not > 0 or < 100.`});
+      throw Exception.new({code: Code.ENTITY_PAYLOAD_VALIDATION_ERROR, data: `${this.constructor.name}: Percentage is not > 0 or < 100.`});
     }
     await this.validate();
   }
@@ -91,6 +91,10 @@ export class Game extends Entity<string> {
     await game.validate();
     
     return game;
+  }
+
+  public toString(): string {
+    return "id: " + this.id.toString() + " title: " + this.title + " price: " + this.price.toString() + " publisher : "+ this.publisher.toString() + " tags : "+ this.tags.toString() + " releaseDate : "+ this.releaseDate.toString() ;
   }
   
 }
