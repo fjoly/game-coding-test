@@ -28,7 +28,7 @@ export class TypeOrmGameRepositoryAdapter implements GameRepositoryPort {
   async findGames(by: { title?:string, tags?:string[], releaseDate?: Date, publisherName?:string, publisherSiret?:number, releaseDateOlderThan?:Date, releaseDateYoungerThan?: Date }, options?: RepositoryFindOptions): Promise<Game[]> {
     //Construct By Object.
     const byGame = {
-      ...( by.title !==undefined && {title: by.title}),
+      ...( by.title !== undefined && {title: by.title}),
       ...( by.releaseDate !==undefined && {releaseDate: by.releaseDate}),
       ...((by.publisherName !==undefined || by.publisherSiret !== undefined) &&
           { publisher : {

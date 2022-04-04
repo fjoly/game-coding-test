@@ -1,4 +1,4 @@
-import {IsArray, IsDate, IsInstance, IsNumber, IsOptional, IsString, IsUUID} from 'class-validator';
+import {IsArray, IsDate, IsInstance, IsNumber,  IsString} from 'class-validator';
 import { v4 } from 'uuid';
 import {Publisher} from "./publisher";
 import {Entity} from "../../common/entity/Entity";
@@ -109,7 +109,13 @@ export class Game extends Entity<string> {
   }
 
   public toString(): string {
-    return "id: " + this.id.toString() + "slug: " + this.slug + " title: " + this.title + " price: " + this.price.toString() + " publisher : "+ this.publisher.toString() + " tags : "+ this.tags.toString() + " releaseDate : "+ this.releaseDate.toString() ;
+    return " id: " + this.id.toString()
+        + " slug: " + this.slug
+        + " title: " + this.title
+        + " price: " + this.price.toString()
+        + " publisher: "+ this.publisher.toString()
+        + " tags: "+ this.tags.toString()
+        + " releaseDate: "+ this.releaseDate.toString() ;
   }
   
 }

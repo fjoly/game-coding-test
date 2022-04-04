@@ -28,6 +28,7 @@ import {GetGamesQuery} from "../../application/queries/getGames.query";
 import {EditGameHttpQuery} from "../query/editGame.http.query";
 import {RemoveAndApplyDiscountGameCommand} from "../../application/commands/removeAndApplyDiscountGame.command";
 import slugify from "slugify";
+import {RepositoryFindOptions} from "../../core/common/persistence/repositoryOptions";
 
 @Controller('v1/games')
 @ApiTags('Games')
@@ -56,7 +57,7 @@ export class GameController {
             return CoreApiResponse.success(gameData,"Game successfully added");
         } catch (e) {
             if( e instanceof Exception){
-                return CoreApiResponse.error(null, "Error creating game",e.data);
+                return CoreApiResponse.error(e.code, "Error creating game",e.data);
             }else {
                 return CoreApiResponse.error(null, "Error creating game",e.toString());
             }
@@ -66,7 +67,7 @@ export class GameController {
     @Post('/process')
     @HttpCode(200)
     @ApiOperation({
-        summary: 'Process a command in application',
+        summary: 'Process a commands in application',
         description: `Process a command into the application`,
     })
     @ApiOkResponse({ description: 'Process successfully executed' })
@@ -77,7 +78,7 @@ export class GameController {
             return CoreApiResponse.success(null,"Process successfully executed");
        } catch (e) {
             if( e instanceof Exception){
-                return CoreApiResponse.error(null, "Error executing process",e.data);
+                return CoreApiResponse.error(e.code, "Error executing process",e.data);
             }else {
                 return CoreApiResponse.error(null, "Error executing process",e.toString());
             }
@@ -105,7 +106,7 @@ export class GameController {
             return CoreApiResponse.success(gameData,"Game successfully updated");
        } catch (e) {
            if( e instanceof Exception){
-               return CoreApiResponse.error(null, "Error updating game",e.data);
+               return CoreApiResponse.error(e.code, "Error updating game",e.data);
            }else {
                return CoreApiResponse.error(null, "Error updating game",e.toString());
            }
@@ -127,7 +128,7 @@ export class GameController {
             return CoreApiResponse.success(null,"Game successfully deleted");
         } catch (e) {
             if( e instanceof Exception){
-                return CoreApiResponse.error(null, "Error deleting game",e.data);
+                return CoreApiResponse.error(e.code, "Error deleting game",e.data);
             }else {
                 return CoreApiResponse.error(null, "Error deleting game",e.toString());
             }
@@ -138,8 +139,8 @@ export class GameController {
     @Get(':slug')
     @HttpCode(200)
     @ApiOperation({
-        summary: 'Get a game data store in application by is title',
-        description: `Get a game data store in into the application by is title`,
+        summary: 'Get a game data store in application by is slug',
+        description: `Get a game data store in into the application by is slug`,
     })
     @ApiResponse({status: HttpStatus.OK, type: CoreApiResponse})
     async getGame(@Param('slug') slug: string): Promise<CoreApiResponse<GetGameResult>> {
@@ -149,7 +150,7 @@ export class GameController {
             return CoreApiResponse.success(gameData,"Request successfully executed");
         } catch (e) {
             if( e instanceof Exception){
-                return CoreApiResponse.error(null, "Error processing request",e.data);
+                return CoreApiResponse.error(e.code, "Error processing request",e.data);
             }else {
                 return CoreApiResponse.error(null, "Error processing request",e.toString());
             }
@@ -160,8 +161,8 @@ export class GameController {
     @Get()
     @HttpCode(200)
     @ApiOperation({
-        summary: 'Get a game data store in application by is title',
-        description: `Get a game data store in into the application by is title`,
+        summary: 'Get list of game data store in application',
+        description: `Get list of a game data store in into the application by title,tags,releaseDate,publisherName,publisherSiret,releaseDateOlderThan with options`,
     })
     @ApiResponse({status: HttpStatus.OK, type: CoreApiResponse})
     async getGames(@Query() query: GetGamesQuery): Promise<CoreApiResponse<GetGameResult[]>> {
@@ -179,7 +180,7 @@ export class GameController {
             return CoreApiResponse.success(gameData,"Request successfully executed");
        } catch (e) {
            if( e instanceof Exception){
-               return CoreApiResponse.error(null, "Error processing request",e.data);
+               return CoreApiResponse.error(e.code, "Error processing request",e.data);
            }else {
                return CoreApiResponse.error(null, "Error processing request",e.toString());
            }
@@ -201,7 +202,7 @@ export class GameController {
             return CoreApiResponse.success(gameData?.publisher,"Request successfully executed");
         } catch (e) {
             if( e instanceof Exception){
-                return CoreApiResponse.error(null, "Error processing request",e.data);
+                return CoreApiResponse.error(e.code, "Error processing request",e.data);
             }else {
                 return CoreApiResponse.error(null, "Error processing request",e.toString());
             }

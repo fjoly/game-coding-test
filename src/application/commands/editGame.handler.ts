@@ -22,9 +22,9 @@ export class EditGameHandler implements ICommandHandler<EditGameCommand>{
       @Inject(GameProvider.PublisherRepository)
       private readonly publisherRepository: PublisherRepositoryPort,
   ) {}
-  
-  public async execute(command: EditGameCommand): Promise<GetGameResult> {
 
+  //Case of editing game commands
+  public async execute(command: EditGameCommand): Promise<GetGameResult> {
     if(!command.slug){
       throw Exception.new({code: Code.ENTITY_PAYLOAD_VALIDATION_ERROR, data: "this game cannot be updated because slug reference of game is empty "});
     }
@@ -35,7 +35,7 @@ export class EditGameHandler implements ICommandHandler<EditGameCommand>{
       throw Exception.new({code: Code.ENTITY_NOT_FOUND_ERROR, data: "this game cannot be updated because it does not exist : " + command.slug});
     }
 
-    //Verify if the new slug already exist in case of updating the slug
+    //Verify if the new slug already exist in case of slug will be modified
     if(command.title || command.publisher?.name){
       const gameWithNewSlug: Game = await this.gameRepository.findGame({slug:slugify((command.title ? command.title: game.getTitle() )+ " " + (command.publisher?.name ? command.publisher?.name: game.getPublisher().getName()))})
       //If slug exist and it's different from game to be Update -> Throw that game cannot be updated.
@@ -51,9 +51,9 @@ export class EditGameHandler implements ICommandHandler<EditGameCommand>{
       if(command.publisher?.name || command.publisher?.siret) {
         publisher = await this.publisherRepository.findPublisher({slug:slugify((command.publisher?.name ? command.publisher?.name: game.getPublisher().getName() )+ " " + (command.publisher?.siret ? command.publisher?.siret: game.getPublisher().getSiret()))})
       }
-      //If publisher already exist
+
       if(publisher!== undefined) {
-        //Case of edit with a publisher already known
+        //Case of edit game with another publisher already known
         await game.edit({
           title: command.title,
           publisher: {
@@ -67,7 +67,7 @@ export class EditGameHandler implements ICommandHandler<EditGameCommand>{
           price: command.price
         });
       } else {
-        //If new publisher modified but his not known create new one.
+        //If publisher modified but he's not already known modify existing publisher attach to the game
         await game.edit({
           title:command.title,
           publisher: {id:null,name:command.publisher?.name,siret:command.publisher?.siret,phone:command.publisher?.phone},
@@ -77,7 +77,7 @@ export class EditGameHandler implements ICommandHandler<EditGameCommand>{
         });
       }
     } else {
-      //If publisher not modified
+      //If publisher not modified operate change only on game
       await game.edit({
         title:command.title,
         publisher: null,
@@ -94,7 +94,6 @@ export class EditGameHandler implements ICommandHandler<EditGameCommand>{
       //Should never happen
       throw Exception.new({code: Code.INTERNAL_ERROR, data: "Error while returning data"});
     }
-
     return GameMapper.toGameResult(games);
   }
   

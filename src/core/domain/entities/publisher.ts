@@ -1,8 +1,7 @@
-import {IsNumber, IsString, IsUUID} from 'class-validator';
+import {IsNumber, IsString} from 'class-validator';
 import { v4 } from 'uuid';
 import {CreatePublisherEntityType} from "./type/createPublisher.entity.type";
 import {Entity} from "../../common/entity/Entity";
-import {EditGameEntityType} from "./type/editGame.entity.type";
 import {EditPublisherEntityType} from "./type/editPublisher.entity.type";
 import slugify from "slugify";
 
@@ -72,7 +71,11 @@ export class Publisher extends Entity<string> {
   }
 
   public toString(): string {
-    return "id: " + this.id.toString() + " slug: " + this.slug + " name: " + this.name + " siret: " + this.siret.toString() + " phone : "+ this.phone;
+    return " id: " + this.id.toString()
+        + " slug: " + this.slug
+        + " name: " + this.name
+        + " siret: " + this.siret.toString()
+        + " phone: "+ this.phone;
   }
   
 }
