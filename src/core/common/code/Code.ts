@@ -15,11 +15,6 @@ export class Code {
     code: 400,
     message: 'Bad request.'
   };
-  
-  public static UNAUTHORIZED_ERROR: CodeDescription = {
-    code: 401,
-    message: 'Unauthorized error.'
-  };
 
   public static INTERNAL_ERROR: CodeDescription = {
     code: 500,
@@ -39,16 +34,6 @@ export class Code {
   public static ENTITY_PAYLOAD_VALIDATION_ERROR: CodeDescription = {
     code: 1002,
     message: 'Entity payload validation error.'
-  };
-  
-  public static USE_CASE_PORT_VALIDATION_ERROR: CodeDescription = {
-    code: 1003,
-    message: 'Use-case port validation error.'
-  };
-  
-  public static VALUE_OBJECT_VALIDATION_ERROR: CodeDescription = {
-    code: 1004,
-    message: 'Value object validation error.'
   };
   
   public static ENTITY_ALREADY_EXISTS_ERROR: CodeDescription = {
