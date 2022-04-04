@@ -31,15 +31,20 @@ describe('RemoveGameHandler', () => {
             releaseDate: DateUtils.toDate(FakeObject.GAME_OBJECT.releaseDate),
         });
         jest.spyOn(gameRepositoryPort, 'findGame').mockImplementation(async () => game);
+        const removeSpy = jest.spyOn(gameRepositoryPort, 'removeGames');
         await removeGameHandler.execute(removeGameCommand)
-        expect(FakeRepository.gameRepositoryPort.removeGames).toBeCalled();
+        expect(removeSpy).toBeCalled();
+        removeSpy.mockReset()
     });
 
     it('Should not remove a game because not exist', async () => {
         jest.spyOn(gameRepositoryPort, 'findGame').mockImplementation(async () => undefined);
+        const removeSpy = jest.spyOn(gameRepositoryPort, 'removeGames');
         await expect(async () => {
             await removeGameHandler.execute(removeGameCommand);
         }).rejects.toThrow();
+        expect(removeSpy).not.toBeCalled();
+        removeSpy.mockReset()
     });
 
 });
