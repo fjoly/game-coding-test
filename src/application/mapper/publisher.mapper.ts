@@ -9,6 +9,7 @@ export class PublisherMapper {
             return undefined;
         }
         return {
+            slug: publisher.getSlug(),
             name: publisher.getName(),
             siret: publisher.getSiret(),
             phone: publisher.getPhone(),

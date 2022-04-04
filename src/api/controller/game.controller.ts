@@ -27,6 +27,7 @@ import {GetPublisherResult} from "../../application/queries/getPublisher.result"
 import {GetGamesQuery} from "../../application/queries/getGames.query";
 import {EditGameHttpQuery} from "../query/editGame.http.query";
 import {RemoveAndApplyDiscountGameCommand} from "../../application/commands/removeAndApplyDiscountGame.command";
+import slugify from "slugify";
 
 @Controller('v1/games')
 @ApiTags('Games')
@@ -48,11 +49,11 @@ export class GameController {
     })
     @ApiOkResponse({ description: 'Game successfully added' })
     @ApiUnprocessableEntityResponse({ description: 'Game verification code are in an invalid format.' })
-    async createGame(@Body() createGameCommand: CreateGameCommand): Promise<CoreApiResponse<void>> {
+    async createGame(@Body() createGameCommand: CreateGameCommand): Promise<CoreApiResponse<GetGameResult>> {
         try
         {
-            await this.commandBus.execute<CreateGameCommand>(createGameCommand);
-            return CoreApiResponse.success(null,"Game successfully added");
+            const gameData = await this.commandBus.execute<CreateGameCommand>(createGameCommand);
+            return CoreApiResponse.success(gameData,"Game successfully added");
         } catch (e) {
             if( e instanceof Exception){
                 return CoreApiResponse.error(null, "Error creating game",e.data);
@@ -70,20 +71,20 @@ export class GameController {
     })
     @ApiOkResponse({ description: 'Process successfully executed' })
     async triggerProcess(): Promise<CoreApiResponse<void>> {
-      // try
-      // {
+       try
+       {
             await this.commandBus.execute<RemoveAndApplyDiscountGameCommand>(new RemoveAndApplyDiscountGameCommand());
             return CoreApiResponse.success(null,"Process successfully executed");
-       // } catch (e) {
-       //     if( e instanceof Exception){
-       //         return CoreApiResponse.error(null, "Error executing process",e.data);
-       //     }else {
-       //         return CoreApiResponse.error(null, "Error executing process",e.toString());
-       //     }
-       // }
+       } catch (e) {
+            if( e instanceof Exception){
+                return CoreApiResponse.error(null, "Error executing process",e.data);
+            }else {
+                return CoreApiResponse.error(null, "Error executing process",e.toString());
+            }
+       }
     }
 
-    @Put(':title')
+    @Put(':slug')
     @ApiBody({type: EditGameHttpQuery})
     @HttpCode(200)
     @ApiOperation({
@@ -91,37 +92,38 @@ export class GameController {
         description: `Update the game into the application`,
     })
     @ApiOkResponse({ description: 'Game successfully updated' })
-    async editGame(@Param('title') title: string,@Body() editGameQuery: EditGameHttpQuery): Promise<CoreApiResponse<void>> {
+    async editGame(@Param('slug') slug: string,@Body() editGameQuery: EditGameHttpQuery): Promise<CoreApiResponse<GetGameResult>> {
         try
         {
-            await this.commandBus.execute<EditGameCommand>(new EditGameCommand(
-                title,
+            const gameData = await this.commandBus.execute<EditGameCommand>(new EditGameCommand(
+                slug,
+                editGameQuery.title,
                 editGameQuery.price,
                 editGameQuery.publisher,
                 editGameQuery.tags,
                 editGameQuery.releaseDate));
-            return CoreApiResponse.success(null,"Game successfully updated");
-        } catch (e) {
-            if( e instanceof Exception){
-                return CoreApiResponse.error(null, "Error updating game",e.data);
-            }else {
-                return CoreApiResponse.error(null, "Error updating game",e.toString());
-            }
-         }
+            return CoreApiResponse.success(gameData,"Game successfully updated");
+       } catch (e) {
+           if( e instanceof Exception){
+               return CoreApiResponse.error(null, "Error updating game",e.data);
+           }else {
+               return CoreApiResponse.error(null, "Error updating game",e.toString());
+           }
+       }
 
     }
 
-    @Delete(':title')
+    @Delete(':slug')
     @HttpCode(200)
     @ApiOperation({
         summary: 'Delete a game in application',
         description: `Delete the game into the application`,
     })
     @ApiOkResponse({ description: 'Game successfully deleted' })
-    async deleteGame(@Param('title') title: string): Promise<CoreApiResponse<void>> {
+    async deleteGame(@Param('slug') slug: string): Promise<CoreApiResponse<void>> {
         try
         {
-            await this.commandBus.execute<RemoveGameCommand>(new RemoveGameCommand(title));
+            await this.commandBus.execute<RemoveGameCommand>(new RemoveGameCommand(slug));
             return CoreApiResponse.success(null,"Game successfully deleted");
         } catch (e) {
             if( e instanceof Exception){
@@ -133,17 +135,17 @@ export class GameController {
 
     }
 
-    @Get(':title')
+    @Get(':slug')
     @HttpCode(200)
     @ApiOperation({
         summary: 'Get a game data store in application by is title',
         description: `Get a game data store in into the application by is title`,
     })
     @ApiResponse({status: HttpStatus.OK, type: CoreApiResponse})
-    async getGame(@Param('title') title: string): Promise<CoreApiResponse<GetGameResult>> {
+    async getGame(@Param('slug') slug: string): Promise<CoreApiResponse<GetGameResult>> {
         try
         {
-            const gameData:GetGameResult = await this.queryBus.execute<GetGameQuery>(new GetGameQuery(title));
+            const gameData:GetGameResult = await this.queryBus.execute<GetGameQuery>(new GetGameQuery(slug));
             return CoreApiResponse.success(gameData,"Request successfully executed");
         } catch (e) {
             if( e instanceof Exception){
@@ -166,6 +168,7 @@ export class GameController {
        try
        {
             const gameData:GetGameResult[] = await this.queryBus.execute<GetGamesQuery>(new GetGamesQuery(
+                query.title,
                 query.tags,
                 query.releaseDate,
                 query.publisherName,
@@ -184,17 +187,17 @@ export class GameController {
 
     }
 
-    @Get(':title/publisher')
+    @Get(':slug/publisher')
     @HttpCode(200)
     @ApiOperation({
         summary: 'Get a publisher data store in application by title of the game',
         description: `Get a publisher data store in into the application by title of the game`,
     })
     @ApiResponse({status: HttpStatus.OK, type: CoreApiResponse})
-    async getPublisher(@Param('title') title: string): Promise<CoreApiResponse<GetPublisherResult>> {
+    async getPublisher(@Param('slug') slug: string): Promise<CoreApiResponse<GetPublisherResult>> {
         try
         {
-            const gameData:GetGameResult = await this.queryBus.execute<GetGameQuery>(new GetGameQuery(title));
+            const gameData:GetGameResult = await this.queryBus.execute<GetGameQuery>(new GetGameQuery(slug));
             return CoreApiResponse.success(gameData?.publisher,"Request successfully executed");
         } catch (e) {
             if( e instanceof Exception){

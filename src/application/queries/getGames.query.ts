@@ -3,6 +3,7 @@ import {RepositoryFindOptions} from "../../core/common/persistence/repositoryOpt
 
 export class GetGamesQuery implements IQuery {
   constructor(
+      readonly title: string | undefined,
       readonly tags: string[] | undefined,
       readonly releaseDate: string | undefined,
       readonly publisherName: string | undefined,

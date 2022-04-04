@@ -18,7 +18,9 @@ export class GetGamesHandler implements IQueryHandler<GetGamesQuery> {
 
     public async execute(query: GetGamesQuery): Promise<GetGameResult[]> {
         const games = await this.gameRepository.findGames(
-            {tags:query.tags,
+            {
+                title:query.title,
+                tags:query.tags,
                 ... ( query.releaseDate !== undefined && {releaseDate: DateUtils.toDate(query.releaseDate)}),
                 ... ( query.releaseDateOlderThan !== undefined && {releaseDateOlderThan: DateUtils.toDate(query.releaseDateOlderThan)}),
                 ... ( query.releaseDateYoungerThan !== undefined && {releaseDateYoungerThan: DateUtils.toDate(query.releaseDateYoungerThan)}),

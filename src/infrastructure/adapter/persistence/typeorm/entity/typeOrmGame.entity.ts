@@ -7,6 +7,9 @@ export class TypeOrmGameEntity {
   @PrimaryColumn()
   public id: string;
 
+  @Column({ unique: true })
+  public slug: string;
+
   @Column()
   public title: string;
 

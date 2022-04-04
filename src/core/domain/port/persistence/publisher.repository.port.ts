@@ -5,6 +5,6 @@ import {Publisher} from "../../entities/publisher";
 
 export interface PublisherRepositoryPort {
 
-  findPublisher(by: { id?:string, name?: string, siret?: number }): Promise<Optional<Publisher>>;
+  findPublisher(by: { id?:string, name?: string, siret?: number, slug?:string }): Promise<Optional<Publisher>>;
 
 }

@@ -9,6 +9,9 @@ import {Inject} from "@nestjs/common";
 import {GameProvider} from "../../core/domain/provider/game.provider";
 import {PublisherRepositoryPort} from "../../core/domain/port/persistence/publisher.repository.port";
 import {DateUtils} from "../../core/common/utils/date/date.utils";
+import slugify from "slugify";
+import {GetGameResult} from "../queries/getGame.result";
+import {GameMapper} from "../mapper/game.mapper";
 
 @CommandHandler(CreateGameCommand)
 export class CreateGameHandler implements ICommandHandler<CreateGameCommand> {
@@ -20,15 +23,15 @@ export class CreateGameHandler implements ICommandHandler<CreateGameCommand> {
       private readonly publisherRepository: PublisherRepositoryPort,
   ) {}
   
-  async execute(command: CreateGameCommand): Promise<void> {
+  async execute(command: CreateGameCommand): Promise<GetGameResult> {
 
-    const gameAlreadyExist: Game = await this.gameRepository.findGame({title:command.title})
+    const gameAlreadyExist: Game = await this.gameRepository.findGame({slug:slugify(command.title + " " + command.publisher?.name)})
 
     if( gameAlreadyExist !== undefined ){
-      throw Exception.new({code: Code.ENTITY_ALREADY_EXISTS_ERROR,data: "this game cannot be created because it already exist : " + command.title});
+      throw Exception.new({code: Code.ENTITY_ALREADY_EXISTS_ERROR,data: "this game cannot be created because it already exist : " + slugify(command.title + " " + command.publisher?.name)});
     }
 
-    const publisher: Publisher = await this.publisherRepository.findPublisher({name:command.publisher.name,siret:command.publisher.siret})
+    const publisher: Publisher = await this.publisherRepository.findPublisher({slug: slugify(command.publisher?.name + " " + command.publisher?.siret)})
 
     let game: Game;
 
@@ -59,10 +62,8 @@ export class CreateGameHandler implements ICommandHandler<CreateGameCommand> {
       });
     }
 
-
-    
-    await this.gameRepository.addGame(game);
     console.log("Game created : " + game.toString());
+    return GameMapper.toGameResult(await this.gameRepository.addGame(game));
   }
   
 }

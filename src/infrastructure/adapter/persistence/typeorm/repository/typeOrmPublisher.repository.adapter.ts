@@ -19,7 +19,7 @@ export class TypeOrmPublisherRepositoryAdapter implements PublisherRepositoryPor
       @InjectRepository(TypeOrmPublisherEntity) private gameRepository: Repository<TypeOrmPublisherEntity>
   ) {}
 
-  async findPublisher(by: { id?:string, name?: string, siret?: number }): Promise<Optional<Publisher>> {
+  async findPublisher(by: { id?:string, name?: string, siret?: number, slug?:string }): Promise<Optional<Publisher>> {
     const gameEntity = await this.gameRepository.findOne({where: by});
     return TypeOrmPublisherMapper.toDomainEntity(gameEntity);
   }

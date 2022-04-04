@@ -3,6 +3,7 @@ import {Publisher} from "../../core/domain/entities/publisher";
 import {GetPublisherResult} from "./getPublisher.result";
 
 export class GetGameResult implements IQueryResult {
+    readonly slug: string = '';
     readonly title: string = '';
     readonly price: number = null;
     readonly publisher: GetPublisherResult = null;

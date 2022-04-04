@@ -17,9 +17,9 @@ export class RemoveGameHandler implements ICommandHandler<RemoveGameCommand>{
   
   public async execute(command: RemoveGameCommand): Promise<void> {
     
-    const game: Game = await this.gameRepository.findGame({title:command.title})
+    const game: Game = await this.gameRepository.findGame({slug:command.slug})
     if(game === undefined){
-      throw Exception.new({code: Code.ENTITY_NOT_FOUND_ERROR, data: `${this.constructor.name}: this game does not exist`});
+      throw Exception.new({code: Code.ENTITY_NOT_FOUND_ERROR, data: `${command.slug} : this game does not exist`});
     }
     await this.gameRepository.removeGames(game);
     console.log("Game deleted : " + game.toString());

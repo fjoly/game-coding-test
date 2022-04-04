@@ -1,13 +1,14 @@
 {
-   "price":10,
+   "title": "GameA",
+   "price":20,
    "publisher":{
       "name":"publisherA",
       "siret": 33646874,
-      "phone":"+33646874165"
+      "phone":"+33646874166"
    },
    "tags":[
-      "game",
-      "guerre"
+      "TagA",
+      "TagB"
    ],
    "releaseDate":"02/04/2022"
 }

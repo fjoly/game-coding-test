@@ -20,14 +20,15 @@ export class TypeOrmGameRepositoryAdapter implements GameRepositoryPort {
     return TypeOrmGameMapper.toDomainEntity(await this.gameRepository.save(gameEntity));
   }
 
-  async findGame(by: { id?:string, title?: string }): Promise<Optional<Game>> {
+  async findGame(by: { id?:string, slug?: string }): Promise<Optional<Game>> {
     const gameEntity = await this.gameRepository.findOne({where: by});
     return TypeOrmGameMapper.toDomainEntity(gameEntity);
   }
 
-  async findGames(by: { tags?:string[], releaseDate?: Date, publisherName?:string, publisherSiret?:number, releaseDateOlderThan?:Date, releaseDateYoungerThan?: Date }, options?: RepositoryFindOptions): Promise<Game[]> {
+  async findGames(by: { title?:string, tags?:string[], releaseDate?: Date, publisherName?:string, publisherSiret?:number, releaseDateOlderThan?:Date, releaseDateYoungerThan?: Date }, options?: RepositoryFindOptions): Promise<Game[]> {
     //Construct By Object.
     const byGame = {
+      ...( by.title !==undefined && {title: by.title}),
       ...( by.releaseDate !==undefined && {releaseDate: by.releaseDate}),
       ...((by.publisherName !==undefined || by.publisherSiret !== undefined) &&
           { publisher : {
@@ -67,14 +68,15 @@ export class TypeOrmGameRepositoryAdapter implements GameRepositoryPort {
     await this.gameRepository.remove(gameEntity);
   }
 
-  async updateGames(game: Game | Game[]): Promise<void> {
+  async updateGames(game: Game | Game[]): Promise<Game | Game[]> {
     let gameEntity;
     if(Array.isArray(game)){
       gameEntity = TypeOrmGameMapper.toOrmEntities(game);
+      return TypeOrmGameMapper.toDomainEntities(await this.gameRepository.save(gameEntity));
     } else {
       gameEntity = TypeOrmGameMapper.toOrmEntity(game);
+      return TypeOrmGameMapper.toDomainEntity(await this.gameRepository.save(gameEntity));
     }
-    await this.gameRepository.save(gameEntity);
   }
 
 }

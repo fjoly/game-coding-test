@@ -7,8 +7,12 @@ import {EditGameEntityType} from "./type/editGame.entity.type";
 import {DiscountGameEntityType} from "./type/discountGame.entity.type";
 import {Exception} from "../../common/exception/Exception";
 import {Code} from "../../common/code/Code";
+import slugify from "slugify";
 
 export class Game extends Entity<string> {
+
+  @IsString()
+  private slug: string;
   
   @IsString()
   private title: string;
@@ -29,6 +33,7 @@ export class Game extends Entity<string> {
     super();
 
     this.id        =  payload.id || v4();
+    this.slug        =  slugify(payload.title + " " + payload.publisher.name);
     this.title      = payload.title;
     this.price      = payload.price;
     this.publisher  = new Publisher({
@@ -40,7 +45,11 @@ export class Game extends Entity<string> {
     this.tags  = payload.tags;
     this.releaseDate  = payload.releaseDate;
   }
-  
+
+  public getSlug(): string {
+    return this.slug;
+  }
+
   public getTitle(): string {
     return this.title;
   }
@@ -62,8 +71,14 @@ export class Game extends Entity<string> {
   }
   
   public async edit(payload: EditGameEntityType): Promise<void> {
+    if (payload.title) {
+      this.title = payload.title;
+    }
     if (payload.price) {
       this.price = payload.price;
+    }
+    if (payload.publisher?.name || payload.title) {
+      this.slug = slugify((payload.title ? payload.title: this.title )+ " " + (payload.publisher?.name ? payload.publisher?.name: this.publisher.getName()));
     }
     if (payload.publisher) {
       await this.publisher.edit(payload.publisher);
@@ -94,7 +109,7 @@ export class Game extends Entity<string> {
   }
 
   public toString(): string {
-    return "id: " + this.id.toString() + " title: " + this.title + " price: " + this.price.toString() + " publisher : "+ this.publisher.toString() + " tags : "+ this.tags.toString() + " releaseDate : "+ this.releaseDate.toString() ;
+    return "id: " + this.id.toString() + "slug: " + this.slug + " title: " + this.title + " price: " + this.price.toString() + " publisher : "+ this.publisher.toString() + " tags : "+ this.tags.toString() + " releaseDate : "+ this.releaseDate.toString() ;
   }
   
 }

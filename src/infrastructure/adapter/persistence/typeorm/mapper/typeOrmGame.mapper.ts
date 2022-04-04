@@ -8,6 +8,7 @@ export class TypeOrmGameMapper {
   public static toOrmEntity(domainGame: Game): TypeOrmGameEntity {
     const ormGame: TypeOrmGameEntity = new TypeOrmGameEntity();
     ormGame.id           = domainGame.getId();
+    ormGame.slug           = domainGame.getSlug();
     ormGame.title      = domainGame.getTitle();
     ormGame.price         = domainGame.getPrice();
     ormGame.publisher         = TypeOrmPublisherMapper.toOrmEntity(domainGame.getPublisher());
@@ -39,7 +40,6 @@ export class TypeOrmGameMapper {
     if(ormGame === null ) {
       return undefined
     }
-
     return {
       id: ormGame.id,
       title: ormGame.title,

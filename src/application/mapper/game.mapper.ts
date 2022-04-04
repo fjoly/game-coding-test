@@ -14,6 +14,7 @@ export class GameMapper {
         const today = mm + '/' + dd + '/' + yyyy;
 
         return {
+            slug: game.getSlug(),
             title: game.getTitle(),
             price: game.getPrice(),
             publisher: PublisherMapper.toPublisherResult(game.getPublisher()),

@@ -7,6 +7,7 @@ export class TypeOrmPublisherMapper {
   public static toOrmEntity(domainPublisher: Publisher): TypeOrmPublisherEntity {
     const ormPublisher: TypeOrmPublisherEntity = new TypeOrmPublisherEntity();
     ormPublisher.id           = domainPublisher.getId();
+    ormPublisher.slug           = domainPublisher.getSlug();
     ormPublisher.name      = domainPublisher.getName();
     ormPublisher.phone         = domainPublisher.getPhone();
     ormPublisher.siret         = domainPublisher.getSiret();

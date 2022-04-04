@@ -16,7 +16,7 @@ export class GetGameHandler implements IQueryHandler<GetGameQuery> {
     ) {}
 
     public async execute(command: GetGameQuery): Promise<GetGameResult> {
-        const game = await this.gameRepository.findGame({title:command.title});
+        const game = await this.gameRepository.findGame({slug:command.slug});
         return GameMapper.toGameResult(game);
     }
 
