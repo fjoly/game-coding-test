@@ -6,6 +6,8 @@ import {GetGameResult} from "./getGame.result";
 import {GameMapper} from "../mapper/game.mapper";
 import {Inject} from "@nestjs/common";
 import {GameProvider} from "../../core/domain/provider/game.provider";
+import {Exception} from "../../core/common/exception/Exception";
+import {Code} from "../../core/common/code/Code";
 
 @QueryHandler(GetGameQuery)
 export class GetGameHandler implements IQueryHandler<GetGameQuery> {
@@ -16,6 +18,9 @@ export class GetGameHandler implements IQueryHandler<GetGameQuery> {
     ) {}
 
     public async execute(command: GetGameQuery): Promise<GetGameResult> {
+        if(!command.slug){
+            throw Exception.new({code: Code.ENTITY_PAYLOAD_VALIDATION_ERROR, data: "this game cannot be find because slug reference of game is empty "});
+        }
         const game = await this.gameRepository.findGame({slug:command.slug});
         return GameMapper.toGameResult(game);
     }

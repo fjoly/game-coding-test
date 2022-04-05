@@ -21,6 +21,7 @@ export class GetGamesHandler implements IQueryHandler<GetGamesQuery> {
             {
                 title:query.title,
                 tags:query.tags,
+                price:query.price,
                 ... ( query.releaseDate !== undefined && {releaseDate: DateUtils.toDate(query.releaseDate)}),
                 ... ( query.releaseDateOlderThan !== undefined && {releaseDateOlderThan: DateUtils.toDate(query.releaseDateOlderThan)}),
                 ... ( query.releaseDateYoungerThan !== undefined && {releaseDateYoungerThan: DateUtils.toDate(query.releaseDateYoungerThan)}),

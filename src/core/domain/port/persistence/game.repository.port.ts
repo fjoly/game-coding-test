@@ -6,7 +6,7 @@ export interface GameRepositoryPort {
 
   findGame(by: { id?:string, slug?: string }): Promise<Optional<Game>>;
 
-  findGames(by: { title?:string, tags?:string[], releaseDate?: Date, publisherName?:string, publisherSiret?:number, releaseDateOlderThan?:Date, releaseDateYoungerThan?: Date }, options?: RepositoryFindOptions): Promise<Game[]>;
+  findGames(by: { title?:string, tags?:string[], price?:number, releaseDate?: Date, publisherName?:string, publisherSiret?:number, releaseDateOlderThan?:Date, releaseDateYoungerThan?: Date }, options?: RepositoryFindOptions): Promise<Game[]>;
 
   addGame(game: Game): Promise<Game>;
 

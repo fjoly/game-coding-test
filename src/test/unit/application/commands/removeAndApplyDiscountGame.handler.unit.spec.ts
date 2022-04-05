@@ -10,7 +10,7 @@ import {EditGameHandler} from "../../../../application/commands/editGame.handler
 import {RemoveAndApplyDiscountGameHandler} from "../../../../application/commands/removeAndApplyDiscountGame.handler";
 import {RemoveAndApplyDiscountGameCommand} from "../../../../application/commands/removeAndApplyDiscountGame.command";
 
-describe('EditGameHandler', () => {
+describe('RemoveAndApplyDiscountGameHandler', () => {
     let gameRepositoryPort: GameRepositoryPort;
     let publisherRepositoryPort: PublisherRepositoryPort;
     let removeAndApplyDiscountGameHandler: RemoveAndApplyDiscountGameHandler;

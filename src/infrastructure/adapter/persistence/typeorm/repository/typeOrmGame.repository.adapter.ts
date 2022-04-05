@@ -25,10 +25,11 @@ export class TypeOrmGameRepositoryAdapter implements GameRepositoryPort {
     return TypeOrmGameMapper.toDomainEntity(gameEntity);
   }
 
-  async findGames(by: { title?:string, tags?:string[], releaseDate?: Date, publisherName?:string, publisherSiret?:number, releaseDateOlderThan?:Date, releaseDateYoungerThan?: Date }, options?: RepositoryFindOptions): Promise<Game[]> {
+  async findGames(by: { title?:string, tags?:string[], price?:number, releaseDate?: Date, publisherName?:string, publisherSiret?:number, releaseDateOlderThan?:Date, releaseDateYoungerThan?: Date }, options?: RepositoryFindOptions): Promise<Game[]> {
     //Construct By Object.
     const byGame = {
       ...( by.title !== undefined && {title: by.title}),
+      ...( by.price !== undefined && {price: by.price}),
       ...( by.releaseDate !==undefined && {releaseDate: by.releaseDate}),
       ...((by.publisherName !==undefined || by.publisherSiret !== undefined) &&
           { publisher : {

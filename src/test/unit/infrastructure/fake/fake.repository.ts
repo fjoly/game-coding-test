@@ -1,9 +1,13 @@
 import {Game} from "../../../../core/domain/entities/game";
 import {RepositoryFindOptions} from "../../../../core/common/persistence/repositoryOptions";
+import {Repository} from "typeorm";
+import {TypeOrmGameEntity} from "../../../../infrastructure/adapter/persistence/typeorm/entity/typeOrmGame.entity";
+import {GameRepositoryPort} from "../../../../core/domain/port/persistence/game.repository.port";
+import {PublisherRepositoryPort} from "../../../../core/domain/port/persistence/publisher.repository.port";
 
 export class FakeRepository {
 
-    static gameRepositoryPort = {
+    static gameRepositoryPort:GameRepositoryPort = {
         updateGames: jest.fn(
             async (game: Game) => {
                 return game;
@@ -31,7 +35,7 @@ export class FakeRepository {
         ),
     }
 
-    static publisherRepositoryPort = {
+    static publisherRepositoryPort:PublisherRepositoryPort = {
         findPublisher: jest.fn(
             async (by: { id?: string; name?: string; siret?: number; slug?: string }) => {
                 return null;

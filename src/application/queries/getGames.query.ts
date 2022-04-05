@@ -5,6 +5,7 @@ export class GetGamesQuery implements IQuery {
   constructor(
       readonly title: string | undefined,
       readonly tags: string[] | undefined,
+      readonly price: number | undefined,
       readonly releaseDate: string | undefined,
       readonly publisherName: string | undefined,
       readonly publisherSiret: number | undefined,

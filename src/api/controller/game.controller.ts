@@ -27,8 +27,6 @@ import {GetPublisherResult} from "../../application/queries/getPublisher.result"
 import {GetGamesQuery} from "../../application/queries/getGames.query";
 import {EditGameHttpQuery} from "../query/editGame.http.query";
 import {RemoveAndApplyDiscountGameCommand} from "../../application/commands/removeAndApplyDiscountGame.command";
-import slugify from "slugify";
-import {RepositoryFindOptions} from "../../core/common/persistence/repositoryOptions";
 
 @Controller('v1/games')
 @ApiTags('Games')
@@ -38,8 +36,6 @@ export class GameController {
         private readonly commandBus: CommandBus,
         private readonly queryBus: QueryBus,
     ) {}
-
-
 
     @Post()
     @ApiBody({type: CreateGameCommand})
@@ -171,6 +167,7 @@ export class GameController {
             const gameData:GetGameResult[] = await this.queryBus.execute<GetGamesQuery>(new GetGamesQuery(
                 query.title,
                 query.tags,
+                query.price,
                 query.releaseDate,
                 query.publisherName,
                 query.publisherSiret,
