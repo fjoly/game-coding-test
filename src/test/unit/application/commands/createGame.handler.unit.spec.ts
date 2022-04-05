@@ -43,10 +43,13 @@ describe('CreateGameHandler', () => {
                 tags: game.getTags(),
                 releaseDate: createGameCommand.releaseDate,
         } as GetGameResult;
+        const addGameSpy = jest.spyOn(gameRepositoryPort, 'addGame')
         jest.spyOn(gameRepositoryPort, 'findGame').mockImplementation(() => undefined);
         jest.spyOn(publisherRepositoryPort, 'findPublisher').mockImplementation(() => undefined);
-        jest.spyOn(gameRepositoryPort, 'addGame').mockImplementation(async () => game);
+        addGameSpy.mockImplementation(async () => game);
         expect(await createGameHandler.execute(createGameCommand)).toEqual(gameResult);
+        expect(addGameSpy).toBeCalled();
+        addGameSpy.mockReset();
     });
 
     it('Should create a game and return it with a publisher already known', async () => {
@@ -71,10 +74,13 @@ describe('CreateGameHandler', () => {
             tags: game.getTags(),
             releaseDate: createGameCommand.releaseDate,
         } as GetGameResult;
+        const addGameSpy = jest.spyOn(gameRepositoryPort, 'addGame');
         jest.spyOn(gameRepositoryPort, 'findGame').mockImplementation(() => undefined);
         jest.spyOn(publisherRepositoryPort, 'findPublisher').mockImplementation(async () => game.getPublisher());
-        jest.spyOn(gameRepositoryPort, 'addGame').mockImplementation(async () => game);
+        addGameSpy.mockImplementation(async () => game);
         expect(await createGameHandler.execute(createGameCommand)).toEqual(gameResult);
+        expect(addGameSpy).toBeCalled();
+        addGameSpy.mockReset();
     });
 
     it('Should not create a game and throw an error', async () => {
@@ -86,9 +92,12 @@ describe('CreateGameHandler', () => {
             tags: createGameCommand.tags,
             releaseDate: DateUtils.toDate(createGameCommand.releaseDate),
         });
+        const addGameSpy = jest.spyOn(gameRepositoryPort, 'addGame')
         jest.spyOn(gameRepositoryPort, 'findGame').mockImplementation(async () => game);
         await expect(async () => {
             await createGameHandler.execute(createGameCommand);
         }).rejects.toThrow();
+        expect(addGameSpy).not.toBeCalled();
+        addGameSpy.mockReset();
     });
 });
