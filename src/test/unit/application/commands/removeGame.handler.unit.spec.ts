@@ -1,12 +1,7 @@
-import {CreateGameHandler} from "../../../../application/commands/createGame.handler";
 import {GameRepositoryPort} from "../../../../core/domain/port/persistence/game.repository.port";
-import {PublisherRepositoryPort} from "../../../../core/domain/port/persistence/publisher.repository.port";
 import {Game} from "../../../../core/domain/entities/game";
-import { v4 } from 'uuid';
-import {CreateGameCommand} from "../../../../application/commands/createGame.command";
 import {DateUtils} from "../../../../core/common/utils/date/date.utils";
 import {FakeRepository} from "../../infrastructure/fake/fake.repository";
-import {GetGameResult} from "../../../../application/queries/getGame.result";
 import {RemoveGameHandler} from "../../../../application/commands/removeGame.handler";
 import {RemoveGameCommand} from "../../../../application/commands/removeGame.command";
 import {FakeObject} from "../../domain/fake.object";

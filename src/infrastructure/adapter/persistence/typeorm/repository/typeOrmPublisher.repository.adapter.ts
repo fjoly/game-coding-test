@@ -1,5 +1,5 @@
 import {Repository} from 'typeorm';
-import {Optional} from "../../../../../core/common/type/CommonTypes";
+import {Optional} from "../../../../../core/common/type/common.types";
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {PublisherRepositoryPort} from "../../../../../core/domain/port/persistence/publisher.repository.port";

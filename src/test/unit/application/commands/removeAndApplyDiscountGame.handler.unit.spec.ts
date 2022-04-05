@@ -3,10 +3,7 @@ import {PublisherRepositoryPort} from "../../../../core/domain/port/persistence/
 import {Game} from "../../../../core/domain/entities/game";
 import {DateUtils} from "../../../../core/common/utils/date/date.utils";
 import {FakeRepository} from "../../infrastructure/fake/fake.repository";
-import {GetGameResult} from "../../../../application/queries/getGame.result";
 import {FakeObject} from "../../domain/fake.object";
-import {EditGameCommand} from "../../../../application/commands/editGame.command";
-import {EditGameHandler} from "../../../../application/commands/editGame.handler";
 import {RemoveAndApplyDiscountGameHandler} from "../../../../application/commands/removeAndApplyDiscountGame.handler";
 import {RemoveAndApplyDiscountGameCommand} from "../../../../application/commands/removeAndApplyDiscountGame.command";
 

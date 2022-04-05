@@ -1,4 +1,4 @@
-import {TestHelper} from "../../helper/typeOrm.helper";
+import {TestHelper} from "../../utils/typeOrm.utils";
 import {Game} from "../../../../../core/domain/entities/game";
 import {DateUtils} from "../../../../../core/common/utils/date/date.utils";
 import {FakeObject} from "../../../domain/fake.object";

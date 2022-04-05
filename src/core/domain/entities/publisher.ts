@@ -1,7 +1,7 @@
 import {IsNumber, IsString} from 'class-validator';
 import { v4 } from 'uuid';
 import {CreatePublisherEntityType} from "./type/createPublisher.entity.type";
-import {Entity} from "../../common/entity/Entity";
+import {Entity} from "../../common/entity/entity";
 import {EditPublisherEntityType} from "./type/editPublisher.entity.type";
 import slugify from "slugify";
 

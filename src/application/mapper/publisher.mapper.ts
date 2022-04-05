@@ -1,5 +1,3 @@
-import {Game} from "../../core/domain/entities/game";
-import {GetGameResult} from "../queries/getGame.result";
 import {GetPublisherResult} from "../queries/getPublisher.result";
 import {Publisher} from "../../core/domain/entities/publisher";
 

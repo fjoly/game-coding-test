@@ -1,4 +1,3 @@
-import {Game} from "../../core/domain/entities/game";
 import {GameRepositoryPort} from "../../core/domain/port/persistence/game.repository.port";
 import {GetGameQuery} from "./getGame.query";
 import {IQueryHandler, QueryHandler} from "@nestjs/cqrs";
@@ -6,8 +5,8 @@ import {GetGameResult} from "./getGame.result";
 import {GameMapper} from "../mapper/game.mapper";
 import {Inject} from "@nestjs/common";
 import {GameProvider} from "../../core/domain/provider/game.provider";
-import {Exception} from "../../core/common/exception/Exception";
-import {Code} from "../../core/common/code/Code";
+import {Exception} from "../../core/common/exception/exception";
+import {Code} from "../../core/common/code/code";
 
 @QueryHandler(GetGameQuery)
 export class GetGameHandler implements IQueryHandler<GetGameQuery> {

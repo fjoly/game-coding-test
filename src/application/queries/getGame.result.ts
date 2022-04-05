@@ -1,5 +1,4 @@
 import {IQueryResult} from "@nestjs/cqrs";
-import {Publisher} from "../../core/domain/entities/publisher";
 import {GetPublisherResult} from "./getPublisher.result";
 
 export class GetGameResult implements IQueryResult {

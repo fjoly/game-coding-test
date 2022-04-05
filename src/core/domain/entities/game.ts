@@ -1,12 +1,12 @@
 import {IsArray, IsDate, IsInstance, IsNumber,  IsString} from 'class-validator';
 import { v4 } from 'uuid';
 import {Publisher} from "./publisher";
-import {Entity} from "../../common/entity/Entity";
+import {Entity} from "../../common/entity/entity";
 import {CreateGameEntityType} from "./type/createGame.entity.type";
 import {EditGameEntityType} from "./type/editGame.entity.type";
 import {DiscountGameEntityType} from "./type/discountGame.entity.type";
-import {Exception} from "../../common/exception/Exception";
-import {Code} from "../../common/code/Code";
+import {Exception} from "../../common/exception/exception";
+import {Code} from "../../common/code/code";
 import slugify from "slugify";
 
 export class Game extends Entity<string> {

@@ -1,8 +1,8 @@
 import {GameRepositoryPort} from "../../core/domain/port/persistence/game.repository.port";
 import {CreateGameCommand} from "./createGame.command";
 import {Game} from "../../core/domain/entities/game";
-import {Exception} from "../../core/common/exception/Exception";
-import {Code} from "../../core/common/code/Code";
+import {Exception} from "../../core/common/exception/exception";
+import {Code} from "../../core/common/code/code";
 import {CommandHandler, ICommandHandler} from "@nestjs/cqrs";
 import {Publisher} from "../../core/domain/entities/publisher";
 import {Inject} from "@nestjs/common";

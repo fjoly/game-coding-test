@@ -1,4 +1,4 @@
-import {TestHelper} from "../../helper/typeOrm.helper";
+import {TestHelper} from "../../utils/typeOrm.utils";
 import {
     TypeOrmGameRepositoryAdapter
 } from "../../../../../infrastructure/adapter/persistence/typeorm/repository/typeOrmGame.repository.adapter";

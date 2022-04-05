@@ -1,4 +1,3 @@
-import {EditPublisherEntityType} from "../../core/domain/entities/type/editPublisher.entity.type";
 import {EditPublisherCommand} from "../../application/commands/editPublisher.command";
 
 export class EditGameHttpQuery {

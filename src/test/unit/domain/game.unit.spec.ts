@@ -57,7 +57,7 @@ describe('Game tests', () => {
             price:15,
             tags:["tag3"],
             title:"Game",
-            publisher: {id:v4,name:"Publisher2",siret:464542,phone:"+12542123134"},
+            publisher: {id:v4(),name:"Publisher2",siret:464542,phone:"+12542123134"},
             releaseDate:GAME_OBJECT.releaseDate});
         await game.edit(GAME_OBJECT)
         expect(game instanceof Game).toBeTruthy();

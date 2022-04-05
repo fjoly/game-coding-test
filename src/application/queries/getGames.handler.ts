@@ -5,7 +5,6 @@ import {GetGameResult} from "./getGame.result";
 import {GameMapper} from "../mapper/game.mapper";
 import {Inject} from "@nestjs/common";
 import {GameProvider} from "../../core/domain/provider/game.provider";
-import {release} from "os";
 import {DateUtils} from "../../core/common/utils/date/date.utils";
 
 @QueryHandler(GetGamesQuery)

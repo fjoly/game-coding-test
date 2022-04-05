@@ -1,7 +1,7 @@
 import {ClassValidationDetails, ClassValidator} from "../utils/class-validator/class.validator";
-import {Optional} from "../type/CommonTypes";
-import {Exception} from "../exception/Exception";
-import {Code} from "../code/Code";
+import {Optional} from "../type/common.types";
+import {Exception} from "../exception/exception";
+import {Code} from "../code/code";
 
 export class Entity<TIdentifier extends string|number> {
   

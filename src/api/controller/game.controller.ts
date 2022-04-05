@@ -19,7 +19,7 @@ import {CommandBus, QueryBus} from "@nestjs/cqrs";
 import {CreateGameCommand} from "../../application/commands/createGame.command";
 import {CoreApiResponse} from "../common/coreApi.response";
 import {EditGameCommand} from "../../application/commands/editGame.command";
-import {Exception} from "../../core/common/exception/Exception";
+import {Exception} from "../../core/common/exception/exception";
 import {RemoveGameCommand} from "../../application/commands/removeGame.command";
 import {GetGameQuery} from "../../application/queries/getGame.query";
 import {GetGameResult} from "../../application/queries/getGame.result";
@@ -200,7 +200,7 @@ export class GameController {
         } catch (e) {
             if( e instanceof Exception){
                 return CoreApiResponse.error(e.code, "Error processing request",e.data);
-            }else {
+            } else {
                 return CoreApiResponse.error(null, "Error processing request",e.toString());
             }
         }

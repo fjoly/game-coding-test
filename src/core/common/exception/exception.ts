@@ -1,5 +1,5 @@
-import {CodeDescription} from "../code/Code";
-import {Optional} from "../type/CommonTypes";
+import {CodeDescription} from "../code/code";
+import {Optional} from "../type/common.types";
 
 export type CreateExceptionPayload<TData> = {
   code: CodeDescription,
