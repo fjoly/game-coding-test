@@ -56,7 +56,12 @@ export class CreateGameHandler implements ICommandHandler<CreateGameCommand> {
         id:null,
         title: command.title,
         price: command.price,
-        publisher: command.publisher,
+        publisher: {
+          id:null,
+          name:command.publisher.name,
+          phone:command.publisher.phone,
+          siret:command.publisher.siret,
+        },
         tags: command.tags,
         releaseDate: DateUtils.toDate(command.releaseDate),
       });

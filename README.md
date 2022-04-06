@@ -38,10 +38,10 @@ $ npm install
 # development @See config of local.app.env
 $ npm run start:local
 
-# watch mode
+# watch mode @See config of local.app.env
 $ npm run start:dev
 
-# production mode
+# production mode 
 $ npm run start:prod
 
 ```
@@ -71,6 +71,10 @@ $ docker run -e NODE_ENV=local
 # docker compose back + db postgres
 $ docker-compose -f ./docker-compose.yml up
 ```
+
+## Api
+
+See OpenApi documentation after starting with context path /api =>  [Local env documentation url](https://localhost:3000/api)
 
 ## License
 

@@ -11,7 +11,7 @@ import {
 import {
     ApiBody,
     ApiOkResponse,
-    ApiOperation, ApiResponse,
+    ApiOperation, ApiQuery, ApiResponse,
     ApiTags,
     ApiUnprocessableEntityResponse
 } from "@nestjs/swagger";
@@ -38,14 +38,34 @@ export class GameController {
     ) {}
 
     @Post()
-    @ApiBody({type: CreateGameCommand})
+    @ApiBody({
+        schema: {
+            type: "object",
+            properties: {
+                title: { type: 'string' },
+                price: { type: 'number'},
+                publisher : {
+                    properties: {
+                        name: {type: 'string'},
+                        siret: {type: 'number'},
+                        phone: {type: 'string'},
+                    }
+                },
+                tags : { type: 'array',
+                    items: {
+                        type: 'string',
+                    },
+                },
+                releaseDate: {type: 'string'}
+            }
+        }
+    })
     @HttpCode(200)
     @ApiOperation({
-        summary: 'Create a game in application',
+        summary: 'Create game',
         description: `Create and persist the game into the application`,
     })
     @ApiOkResponse({ description: 'Game successfully added' })
-    @ApiUnprocessableEntityResponse({ description: 'Game verification code are in an invalid format.' })
     async createGame(@Body() createGameCommand: CreateGameCommand): Promise<CoreApiResponse<GetGameResult>> {
         try
         {
@@ -63,8 +83,8 @@ export class GameController {
     @Post('/process')
     @HttpCode(200)
     @ApiOperation({
-        summary: 'Process a commands in application',
-        description: `Process a command into the application`,
+        summary: 'Process a command',
+        description: `Process a command RemoveAndApplyDiscountGameCommand into the application`,
     })
     @ApiOkResponse({ description: 'Process successfully executed' })
     async triggerProcess(): Promise<CoreApiResponse<void>> {
@@ -82,11 +102,32 @@ export class GameController {
     }
 
     @Put(':slug')
-    @ApiBody({type: EditGameHttpQuery})
+    @ApiBody({
+        schema: {
+            type: "object",
+            properties: {
+                title: { type: 'string' },
+                price: { type: 'number'},
+                publisher : {
+                    properties: {
+                        name: {type: 'string'},
+                        siret: {type: 'number'},
+                        phone: {type: 'string'},
+                    }
+                },
+                tags : { type: 'array',
+                    items: {
+                        type: 'string',
+                    },
+                },
+                releaseDate: {type: 'string'}
+            }
+        }
+    })
     @HttpCode(200)
     @ApiOperation({
-        summary: 'Update a game in application',
-        description: `Update the game into the application`,
+        summary: 'Update game',
+        description: `Update the given game into the application`,
     })
     @ApiOkResponse({ description: 'Game successfully updated' })
     async editGame(@Param('slug') slug: string,@Body() editGameQuery: EditGameHttpQuery): Promise<CoreApiResponse<GetGameResult>> {
@@ -113,8 +154,8 @@ export class GameController {
     @Delete(':slug')
     @HttpCode(200)
     @ApiOperation({
-        summary: 'Delete a game in application',
-        description: `Delete the game into the application`,
+        summary: 'Delete game',
+        description: `Delete the given game into the application`,
     })
     @ApiOkResponse({ description: 'Game successfully deleted' })
     async deleteGame(@Param('slug') slug: string): Promise<CoreApiResponse<void>> {
@@ -135,8 +176,8 @@ export class GameController {
     @Get(':slug')
     @HttpCode(200)
     @ApiOperation({
-        summary: 'Get a game data store in application by is slug',
-        description: `Get a game data store in into the application by is slug`,
+        summary: 'Find game',
+        description: `Find a game by is slug and return it`,
     })
     @ApiResponse({status: HttpStatus.OK, type: CoreApiResponse})
     async getGame(@Param('slug') slug: string): Promise<CoreApiResponse<GetGameResult>> {
@@ -155,10 +196,36 @@ export class GameController {
     }
 
     @Get()
+    @ApiQuery({
+        name:"queryFilter",
+        schema: {
+            type: "object",
+            properties: {
+                title: { type: 'string' },
+                price: { type: 'number'},
+                tags : { type: 'array',
+                    items: {
+                        type: 'string',
+                    },
+                },
+                releaseDate: {type: 'string'},
+                publisherName: { type: 'string'},
+                publisherSiret: { type: 'number'},
+                releaseDateOlderThan: { type: 'string'},
+                releaseDateYoungerThan: { type: 'number'},
+                options: {
+                    properties: {
+                        limit: {type: 'number'},
+                        offset: {type: 'number'}
+                    }
+                },
+            }
+        }
+    })
     @HttpCode(200)
     @ApiOperation({
-        summary: 'Get list of game data store in application',
-        description: `Get list of a game data store in into the application by title,tags,releaseDate,publisherName,publisherSiret,releaseDateOlderThan with options`,
+        summary: 'Find games',
+        description: `Find games data by title,tags,releaseDate,publisherName,publisherSiret,releaseDateOlderThan with options and return it`,
     })
     @ApiResponse({status: HttpStatus.OK, type: CoreApiResponse})
     async getGames(@Query() query: GetGamesQuery): Promise<CoreApiResponse<GetGameResult[]>> {
@@ -188,8 +255,8 @@ export class GameController {
     @Get(':slug/publisher')
     @HttpCode(200)
     @ApiOperation({
-        summary: 'Get a publisher data store in application by title of the game',
-        description: `Get a publisher data store in into the application by title of the game`,
+        summary: 'Get publisher data',
+        description: `Find a game by is slug and return publisher data of the given game`,
     })
     @ApiResponse({status: HttpStatus.OK, type: CoreApiResponse})
     async getPublisher(@Param('slug') slug: string): Promise<CoreApiResponse<GetPublisherResult>> {
