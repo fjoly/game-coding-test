@@ -1,6 +1,6 @@
-import {RepositoryFindOptions} from "../../../common/persistence/RepositoryOptions";
 import {Optional} from "../../../common/type/common.types";
 import {Game} from "../../entities/game";
+import {RepositoryFindOptions} from "../../../common/persistence/repositoryOptions";
 
 export interface GameRepositoryPort {
 

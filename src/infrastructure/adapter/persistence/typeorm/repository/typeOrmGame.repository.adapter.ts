@@ -2,11 +2,11 @@ import {Repository} from 'typeorm';
 import {GameRepositoryPort} from "../../../../../core/domain/port/persistence/game.repository.port";
 import {TypeOrmGameEntity} from "../entity/typeOrmGame.entity";
 import {Game} from "../../../../../core/domain/entities/game";
-import {RepositoryFindOptions} from "../../../../../core/common/persistence/RepositoryOptions";
 import {Optional} from "../../../../../core/common/type/common.types";
 import {Injectable} from "@nestjs/common";
 import {TypeOrmGameMapper} from "../mapper/typeOrmGame.mapper";
 import {InjectRepository} from "@nestjs/typeorm";
+import {RepositoryFindOptions} from "../../../../../core/common/persistence/repositoryOptions";
 
 @Injectable()
 export class TypeOrmGameRepositoryAdapter implements GameRepositoryPort {
